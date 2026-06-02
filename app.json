@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "tc3005b-movil",
+    "slug": "tc3005b-movil",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#F3F4F8"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#F3F4F8"
+      }
+    },
+    "web": {
+      "bundler": "metro"
+    }
+  }
+}
