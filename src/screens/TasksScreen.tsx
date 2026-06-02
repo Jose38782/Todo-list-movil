@@ -156,8 +156,11 @@ export function TasksScreen({ navigation, route }: Props) {
 
       setTasks((prev) => prev.map((task) => (task.id === optimisticTask.id ? createdTask : task)));
     } catch (saveError) {
-      setError(saveError instanceof Error ? saveError.message : 'Unable to save task.');
-      setTasks((prev) => prev.filter((task) => !task.id.startsWith('temp-')));
+      setError(
+        saveError instanceof Error
+          ? `Unable to sync task with backend: ${saveError.message}. It will stay visible locally.`
+          : 'Unable to sync task with backend. It will stay visible locally.'
+      );
     } finally {
       setIsSaving(false);
     }
@@ -252,6 +255,23 @@ export function TasksScreen({ navigation, route }: Props) {
           </View>
         </View>
 
+        <CreateTaskForm
+          onSubmit={handleSubmitTask}
+          isSaving={isSaving}
+          submitLabel={editingTask ? 'Update task' : 'Add to list'}
+          initialValues={
+            editingTask
+              ? {
+                  title: editingTask.title,
+                  description: editingTask.description,
+                  dueDate: editingTask.dueDate ?? undefined,
+                  priority: editingTask.priority ?? 'low',
+                }
+              : undefined
+          }
+          onCancel={editingTask ? () => setEditingTask(null) : undefined}
+        />
+
         {isLoading ? <StateCard text="Loading list and tasks..." /> : null}
         {!isLoading && error ? <StateCard text={error} /> : null}
         {taskDetailsLoading ? <StateCard text="Loading task details from GET /task-lists/{id}/tasks/{taskId}..." /> : null}
@@ -281,23 +301,6 @@ export function TasksScreen({ navigation, route }: Props) {
             ))}
           </View>
         ) : null}
-
-        <CreateTaskForm
-          onSubmit={handleSubmitTask}
-          isSaving={isSaving}
-          submitLabel={editingTask ? 'Update task' : 'Add to list'}
-          initialValues={
-            editingTask
-              ? {
-                  title: editingTask.title,
-                  description: editingTask.description,
-                  dueDate: editingTask.dueDate ?? undefined,
-                  priority: editingTask.priority ?? 'low',
-                }
-              : undefined
-          }
-          onCancel={editingTask ? () => setEditingTask(null) : undefined}
-        />
 
         {isSaving ? (
           <Text style={styles.savingText}>

@@ -88,11 +88,7 @@ const getApiUrl = () => {
     return envUrl;
   }
 
-  if (Platform.OS === 'android') {
-    return 'http://10.0.2.2:8080';
-  }
-
-  return 'http://localhost:8080';
+  return 'https://todo-backend-88437624090.us-central1.run.app';
 };
 
 const API_BASE_URL = getApiUrl();
